@@ -42,11 +42,11 @@ export default function Home() {
   ];
 
   const tags = ["Branding", "Promotion", "Landing", "Social", "Explainer", "Logo Anim"];
-
+ 
   return (
-    <main className="container-max mx-auto px-4 py-6 sm:py-10">
-      <header className="mb-6 flex items-center justify-between">
-        <div className="flex items-center gap-3">
+    <main className="container-max min-h-screen flex flex-col justify-center mx-auto px-4 py-6 sm:py-10">
+      <header className="mb-6 flex items-center justify-between px-1 py-4 sm:py-5 min-h-[76px]">
+        <div className="flex items-center justify-between gap-3 " id="temp">
           <div className="grid h-10 w-10 place-items-center rounded-xl bg-base-900 border border-neutral-800 shadow-glow text-xl font-bold">{"<PC>"}</div>
           <div>
             <div className={"text-xl font-semibold tracking-wide"}>PIXELCYPHER</div>
@@ -96,15 +96,15 @@ export default function Home() {
           </div>
         </div>
         <div className="lg:col-span-5 space-y-3">
-          <div className="card aspect-video grid place-items-center">
+          <div className="card aspect-video w-full max-w-[420px] mx-auto grid place-items-center">
             <div className="flex flex-col items-center gap-2">
               <div className="grid h-10 w-10 place-items-center rounded-full border border-neutral-700 bg-base-900"><Play className="h-4 w-4" /></div>
               <div className="text-xs text-base-400">Video Edit Preview</div>
             </div>
           </div>
-          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
+          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 max-w-[420px] mx-auto">
             {tags.map((t) => (
-              <button key={t} onClick={() => open(t)} className="tile px-3 py-4 text-sm font-medium text-base-300 transition hover:bg-base-800/60">
+              <button key={t} onClick={() => open(t)} className="tile h-[4.6rem] px-3 py-4 text-sm font-medium text-base-300 transition hover:bg-base-800/60">
                 {t}
               </button>
             ))}

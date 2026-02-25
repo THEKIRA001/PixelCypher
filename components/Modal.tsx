@@ -3,6 +3,7 @@
 import { X } from "lucide-react";
 import { createPortal } from "react-dom";
 import { useEffect, useState, type ReactNode } from "react";
+import { text } from "node:stream/consumers";
 
 type Props = {
   title: string;
@@ -21,8 +22,8 @@ export default function Modal({ title, open, onClose, children }: Props) {
       <div className="relative mx-4 w-[min(1100px,90vw)] h-[min(80vh,760px)] rounded-2xl border border-neutral-700 bg-base-900/90 shadow-glow animate-in">
         <div className="flex items-center justify-between px-5 py-3 border-b border-neutral-800">
           <div className="text-base font-semibold">{title}</div>
-          <button aria-label="Close" onClick={onClose} className="btn btn-ghost h-8 w-8 p-0 rounded-lg">
-            <X className="h-4 w-4" />
+          <button aria-label="Close" onClick={onClose} id="button_popup" className=" btn-ghost  h-8 w-8 p-0 rounded-lg text-base-200 hover:text-white flex items-center justify-center">
+            <X className="h-4 w-4 text-white"  strokeWidth={2.5}/>
           </button>
         </div>
         <div className="p-5 h-[calc(100%-88px)] overflow-auto">
