@@ -27,8 +27,7 @@ export default function Modal({ title, open, onClose, children }: Props) {
           </button>
         </div>
         <div className="p-5 h-[calc(100%-88px)] overflow-auto">
-          <div className="h-full rounded-xl border border-neutral-800 bg-base-900" />
-          {children}
+          {children ?? <div className="h-full rounded-xl border border-neutral-800 bg-base-900" />}
         </div>
         <div className="absolute bottom-3 left-1/2 -translate-x-1/2 rounded-lg border border-neutral-800 bg-base-900/90 px-3 py-1 text-xs text-base-300">{title}</div>
       </div>
