@@ -1,12 +1,59 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect, useRef } from "react";
 import Modal from "@/components/Modal";
 import { Play } from "lucide-react";
+import { fetchVideoUrl } from "@/lib/s3";
+
+function VideoPlayer({ src }: { src: string }) {
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [playing, setPlaying] = useState(false);
+
+  function handlePlay() {
+    videoRef.current?.play();
+    setPlaying(true);
+  }
+
+  return (
+    <div className="relative h-full w-full rounded-xl overflow-hidden bg-black">
+      <video
+        ref={videoRef}
+        src={src}
+        className="h-full w-full object-contain"
+        preload="metadata"
+        controls={playing}
+      />
+      {!playing && (
+        <div
+          className="absolute inset-0 flex flex-col items-center justify-center gap-3 cursor-pointer bg-black/40"
+          onClick={handlePlay}
+        >
+          <div className="grid h-14 w-14 place-items-center rounded-full bg-white/10 border border-white/20 backdrop-blur-sm hover:bg-white/20 transition">
+            <Play className="h-6 w-6 fill-white ml-1" />
+          </div>
+          <div className="text-[11px] text-base-300">Click to play</div>
+        </div>
+      )}
+    </div>
+  );
+}
 
 export default function Home() {
   const year = useMemo(() => new Date().getFullYear(), []);
   const [modalTitle, setModalTitle] = useState<string | null>(null);
+  const [videoUrl, setVideoUrl] = useState<string | null>(null);
+  const [videoModalOpen, setVideoModalOpen] = useState(false);
+
+  useEffect(() => {
+    fetch("/api/videos")
+      .then((r) => r.json())
+      .then(({ videos }) => {
+        if (videos.length > 0) return fetchVideoUrl(videos[0].key);
+      })
+      .then((url) => { if (url) setVideoUrl(url); })
+      .catch(() => null);
+  }, []);
+
   const open = (t: string) => setModalTitle(t);
   const close = () => setModalTitle(null);
 
@@ -59,7 +106,7 @@ export default function Home() {
       </header>
 
       <section className="h-full w-full flex gap-5">
-        <div className="container-card flex">
+        <div className="container-card flex overflow-hidden">
           <div className="card p-5 sm:p-6 flex flex-col gap-3 overflow-auto">
             <div className="flex flex-col justify-start gap-1">
               <div className="text-sm font-start2p font-extrabold tracking-wide">WE MAKE LOUD, CLEAN BRANDS</div>
@@ -94,10 +141,22 @@ export default function Home() {
           </div>
         </div>
         <div className="flex flex-col justify-between gap-3 container-card p-3">
-          <div className="video-card transition-up">
+          <div className="video-card transition-up cursor-pointer" onClick={() => videoUrl && setVideoModalOpen(true)}>
             <div className="h-[160px] w-[350px] flex flex-col items-center justify-center gap-2">
-              <div className=""><Play className="h-4 w-4 fill-white" /></div>
-              <div className="text-[11px]">Video Edit Preview</div>
+              {videoUrl ? (
+                <div className="relative h-full w-full">
+                  <video src={videoUrl} className="h-full w-full rounded object-cover" preload="metadata" />
+                  <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 bg-black/30 rounded">
+                    <Play className="h-5 w-5 fill-white" />
+                    <div className="text-[11px]">Video Edit Preview</div>
+                  </div>
+                </div>
+              ) : (
+                <>
+                  <Play className="h-4 w-4 fill-white" />
+                  <div className="text-[11px]">Video Edit Preview</div>
+                </>
+              )}
             </div>
           </div>
           <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
@@ -122,6 +181,9 @@ export default function Home() {
       </footer>
 
       <Modal title={modalTitle ?? ""} open={!!modalTitle} onClose={close} />
+      <Modal title="Video Edit Preview" open={videoModalOpen} onClose={() => setVideoModalOpen(false)}>
+        {videoUrl && <VideoPlayer src={videoUrl} />}
+      </Modal>
     </main>
   );
 }
