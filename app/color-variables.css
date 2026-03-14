@@ -1,0 +1,44 @@
+/* PixelCypher Color Palette
+   Extracted from pixelcypher.mp4
+   ---------------------------------------- */
+
+:root {
+  /* Backgrounds */
+  --bg-black:#020202;
+  --bg-white:#dddddd;
+  --bg-light-black:#111111;
+  --bg-dark-gray:#222222;
+  --bg-abyss:#0b0b0b;
+  --bg-obsidian:#191919;
+
+    /* Text */
+  --text-ash:#636363;
+  --text-fog:#939393;
+  --text-silver:#c3c3c3;
+  --text-white:#dddddd;
+  --text-black:#020202;
+
+  /* Box-Shadow */
+  --shadow-white:#dddddd;
+  --shadow-slate:#494949;
+
+  /* Surfaces */
+  --surface-charcoal:#202020;
+  --surface-graphite:#2d2d2d;
+  --surface-slate:#494949;
+
+  /* Accent — blues */
+  --accent-deep-indigo:#0d1082;
+  --accent-cyan-sky:#309ecf;
+  --accent-ice-blue:#90e0f8;
+  --accent-powder-blue:#c5daef;
+
+  /* Accent — reds & embers */
+  --accent-crimson:#840d11;
+  --accent-blood-ember:#3b0f02;
+
+  /* Accent — ambers & warms */
+  --accent-bronze:#c58c2b;
+  --accent-warm-sand:#ebc48f;
+  --accent-parchment:#e5dac2;
+}
