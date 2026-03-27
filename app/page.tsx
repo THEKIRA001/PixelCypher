@@ -44,6 +44,17 @@ export default function Home() {
   const [videoUrl, setVideoUrl] = useState<string | null>(null);
   const [videoModalOpen, setVideoModalOpen] = useState(false);
 
+  const handleToggle = (e: React.SyntheticEvent<HTMLDetailsElement>) => {
+  const current = e.currentTarget;
+
+  if (current.open) {
+    document.querySelectorAll("details").forEach((el) => {
+      if (el !== current) el.removeAttribute("open");
+    });
+  }
+};
+
+
   useEffect(() => {
     fetch("/api/videos")
       .then((r) => r.json())
@@ -106,35 +117,42 @@ export default function Home() {
       </header>
 
       <section className="h-full w-full flex gap-5">
-        <div className="container-card flex overflow-hidden">
-          <div className="card p-5 sm:p-6 flex flex-col gap-3 overflow-auto">
+        <div className="container-card flex overflow-visible">
+          <div className="card p-5 sm:p-6 flex flex-col gap-3 overflow-visible">
             <div className="flex flex-col justify-start gap-1">
               <div className="text-sm font-start2p font-extrabold tracking-wide">WE MAKE LOUD, CLEAN BRANDS</div>
               <p className="text-[10px]">PixelCypher Studio crafts pixel-perfect branding, edits cinematic videos, and ships clean, fast websites tailored to small businesses and creators. We keep the look minimal, the impact maximal.</p>
             </div>
             <div className="flex flex-col gap-3">
               {serviceGroups.map((g, i) => (
-                <details key={i} className="bg-linear-gradient rounded-xl border-slate">
-                  <summary className="list-none cursor-pointer select-none px-4 py-3 text-base flex items-center gap-3">
-                    <span className="h-2 w-2 rounded-full bg-base-300" />
-                    <span className="text-xs font-medium">{g.title}</span>
-                  </summary>
-                  <div className="px-4 pb-4">
-                    <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-                      {g.items.map((it, j) => (
-                        <button
-                          key={j}
-                          onClick={() => open(it.title)}
-                          className="tile p-4 text-left transition hover:bg-base-800/60"
-                        >
-                          <div className="h-24 rounded-lg bg-gradient-to-b from-base-800/60 to-base-900 mb-3" />
-                          <div className="text-sm font-semibold">{it.title}</div>
-                          <div className="text-xs text-base-400">{it.subtitle}</div>
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-                </details>
+                <details
+  key={i}
+  onToggle={handleToggle}
+  className="relative bg-linear-gradient rounded-xl border-slate"
+>
+  <summary className="list-none cursor-pointer px-4 py-3 flex items-center gap-3">
+    <span className="h-2 w-2 rounded-full bg-base-300" />
+    <span className="text-xs font-medium">{g.title}</span>
+  </summary>
+
+  <div className="absolute left-0 top-full mt-2 w-full z-50 px-4 pb-4">
+    <div className="bg-base-900 border border-neutral-800 rounded-xl p-4 shadow-xl max-h-[300px] overflow-auto">
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+        {g.items.map((it, j) => (
+          <button
+            key={j}
+            onClick={() => open(it.title)}
+            className="tile p-4 text-left hover:bg-base-800/60"
+          >
+            <div className="h-24 rounded-lg bg-gradient-to-b from-base-800/60 to-base-900 mb-3" />
+            <div className="text-sm font-semibold">{it.title}</div>
+            <div className="text-xs text-base-400">{it.subtitle}</div>
+          </button>
+        ))}
+      </div>
+    </div>
+  </div>
+</details>
               ))}
               <div className="px-1 text-xs text-base-400">Fast turnaround · Fixed-price packages available</div>
             </div>
